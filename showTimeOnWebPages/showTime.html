@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>显示当前时间</title>
+    <style>
+      body { margin: 0; font-size: 20px; display:flex; flex:1; min-height: 800px; align-items: center; }
+      .clock-face { position: relative; width: 100%; height: 100%; transform: translateY(-3px); }
+      .clock { width: 300px; height: 300px; border:10px solid #000; border-radius:50%;
+        margin:50px auto; padding:20px; position: relative; }
+      .hand {
+        width:50%; height:6px; background:black; position: absolute; top:50%;
+        transform: rotate(90deg);
+        transform-origin: right;
+       }
+      #time { margin-top: 30px; text-align: center; font-size: 60px; }
+    </style>
+  </head>
+  <body>
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hand hour-hand"></div>
+        <div class="hand min-hand"></div>
+        <div class="hand second-hand" style="transform: rotate(90deg);"></div>
+      </div>
+      <div id="time">00:00:00</div>
+    </div>
+    <script>
+      function sayTime(){
+        const now = new Date();
+        console.log(now); // Thu Dec 07 2017 21:10:05 GMT+0800 (中国标准时间)
+        const second = now.getSeconds();
+        console.log(second);  // 05
+        const min = now.getMinutes();
+        console.log(min); // 10
+        const hour = now.getHours();
+        console.log(hour);  // 21
+        const secondDegrees = (second / 60)*360 + 90;
+        // 当前秒数除以60得到一个百分比的数值，然后乘以360得到度数，再加上90°让指针从0秒开始计算
+        const minDegrees = (min / 60)*360 + 90;
+        // 当前秒分钟数除以60得到一个百分比的数值，然后乘以360得到度数，再加上90°让指针从0分开始计算
+        const hourDegrees = (hour / 12)*360 + 90;
+        // 当前时数除以12得到一个百分比的数值，然后乘以360得到度数，再加上90°让指针从0时开始计算
+        var secondHand = document.querySelector('.second-hand');
+        var minHand = document.querySelector('.min-hand');
+        var hourHand = document.querySelector('.hour-hand');
+        secondHand.style.transform = `rotate(${secondDegrees}deg)`;
+        minHand.style.transform = `rotate(${minDegrees}deg)`;
+        hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+
+        var time = document.querySelector('#time');
+        time.innerHTML = (hour>9?hour:('0'+hour))+':'+(min>9?min:('0'+min))+':'+(second>9?second:('0'+second));
+      }
+      setInterval(sayTime, 1000);
+    </script>
+  </body>
+</html>
